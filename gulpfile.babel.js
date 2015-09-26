@@ -1,20 +1,20 @@
-var gulp = require('gulp');
-var autoprefixer = require('gulp-autoprefixer');
-var babel = require('gulp-babel');
-var cssmin = require('gulp-minify-css');
-var htmlmin = require('gulp-minify-html');
-var imgmin = require('gulp-imagemin');
-var jade = require('gulp-jade');
-var sass = require('gulp-sass');
-var uglify = require('gulp-uglify');
-var browsersync = require('browser-sync').create();
+import gulp from 'gulp';
+import autoprefixer from 'gulp-autoprefixer';
+import babel from 'gulp-babel';
+import cssmin from 'gulp-minify-css';
+import htmlmin from 'gulp-minify-html';
+import imgmin from 'gulp-imagemin';
+import jade from 'gulp-jade';
+import sass from 'gulp-sass';
+import uglify from 'gulp-uglify';
+import browsersync from 'browser-sync';
 
 function onError(err) {
 	console.log(err);
 	this.emit('end');
 }
 
-gulp.task('sass', function() {
+gulp.task('sass', () => {
 	return gulp.src('./sass/main.scss')
 		.pipe(sass()).on('error', onError)
 		.pipe(autoprefixer())
@@ -23,7 +23,7 @@ gulp.task('sass', function() {
 		.pipe(browsersync.stream());
 });
 
-gulp.task('jade', function() {
+gulp.task('jade', () => {
 	return gulp.src('./jade/**/index.jade')
 		.pipe(jade()).on('error', onError)
 		.pipe(htmlmin())
@@ -31,7 +31,7 @@ gulp.task('jade', function() {
 		.pipe(browsersync.stream());
 });
 
-gulp.task('js', function() {
+gulp.task('js', () => {
 	return gulp.src('./js/**/app.js')
 		.pipe(babel()).on('error', onError)
 		.pipe(uglify())
@@ -39,7 +39,7 @@ gulp.task('js', function() {
 		.pipe(browsersync.stream());
 });
 
-gulp.task('img', function() {
+gulp.task('img', () => {
 	return gulp.src('./img/**/*')
 		.pipe(imgmin())
 		.pipe(gulp.dest('./_bin/img'))
@@ -47,9 +47,9 @@ gulp.task('img', function() {
 		.on('error', onError);
 });
 
-gulp.task('build', ['sass', 'jade', 'js', 'img', 'other']);
+gulp.task('build', ['sass', 'jade', 'js', 'img']);
 
-gulp.task('default', function() {
+gulp.task('default', () => {
 	browsersync.init({ server: './_bin' });
 	gulp.watch('./sass/**/*', ['sass']);
 	gulp.watch('./jade/**/*', ['jade']);
