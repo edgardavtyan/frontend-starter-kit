@@ -7,11 +7,17 @@ import imgmin from 'gulp-imagemin';
 import jade from 'gulp-jade';
 import sass from 'gulp-sass';
 import uglify from 'gulp-uglify';
+import watch from 'gulp-watch';
+import batch from 'gulp-batch';
 import browsersync from 'browser-sync';
 
 function onError(err) {
 	console.log(err);
 	this.emit('end');
+}
+
+function watchFiles(files, tasks) {
+	watch(files, batch((events, done) => gulp.start(tasks, done)));
 }
 
 gulp.task('sass', () => {
@@ -51,8 +57,8 @@ gulp.task('build', ['sass', 'jade', 'js', 'img']);
 
 gulp.task('default', () => {
 	browsersync.init({ server: './_bin' });
-	gulp.watch('./sass/**/*', ['sass']);
-	gulp.watch('./jade/**/*', ['jade']);
-	gulp.watch('./js/**/*', ['js']);
-	gulp.watch('./img/**/*', ['img']);
+	watchFiles('./sass/**/*', 'sass');
+	watchFiles('./jade/**/*', 'jade');
+	watchFiles('./js/**/*', 'js');
+	watchFiles('./img/**/*', 'img');
 });
