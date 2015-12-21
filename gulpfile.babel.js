@@ -11,7 +11,7 @@ import watch from 'gulp-watch';
 import batch from 'gulp-batch';
 import browsersync from 'browser-sync';
 
-function onError(err) {
+function handleError(err) {
 	console.log(err);
 	this.emit('end');
 }
@@ -22,7 +22,7 @@ function watchFiles(files, tasks) {
 
 gulp.task('sass', () => {
 	return gulp.src('./sass/main.scss')
-		.pipe(sass()).on('error', onError)
+		.pipe(sass()).on('error', handleError)
 		.pipe(autoprefixer())
 		.pipe(cssmin())
 		.pipe(gulp.dest('./_bin'))
@@ -31,7 +31,7 @@ gulp.task('sass', () => {
 
 gulp.task('jade', () => {
 	return gulp.src('./jade/**/index.jade')
-		.pipe(jade()).on('error', onError)
+		.pipe(jade()).on('error', handleError)
 		.pipe(htmlmin())
 		.pipe(gulp.dest('./_bin'))
 		.pipe(browsersync.stream());
@@ -39,7 +39,7 @@ gulp.task('jade', () => {
 
 gulp.task('js', () => {
 	return gulp.src('./js/**/app.js')
-		.pipe(babel()).on('error', onError)
+		.pipe(babel()).on('error', handleError)
 		.pipe(uglify())
 		.pipe(gulp.dest('./_bin'))
 		.pipe(browsersync.stream());
@@ -50,7 +50,7 @@ gulp.task('img', () => {
 		.pipe(imgmin())
 		.pipe(gulp.dest('./_bin/img'))
 		.pipe(browsersync.stream())
-		.on('error', onError);
+		.on('error', handleError);
 });
 
 gulp.task('build', ['sass', 'jade', 'js', 'img']);
