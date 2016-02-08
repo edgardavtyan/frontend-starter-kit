@@ -1,1 +1,1 @@
-# Frontend starter keet
+# Frontend starter kit
